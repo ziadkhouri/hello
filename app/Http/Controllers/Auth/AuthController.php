@@ -7,7 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use App\Jobs\SendPushNotification;
+use App\Jobs\SendCreateUserNotification;
 
 class AuthController extends Controller
 {
@@ -76,7 +76,7 @@ class AuthController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $this->dispatch(new SendPushNotification($user, "Welcome to hello.app"));
+        $this->dispatch(new SendCreateUserNotification($user->id));
 
         return $user;
     }

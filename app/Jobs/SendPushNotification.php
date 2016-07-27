@@ -14,18 +14,18 @@ class SendPushNotification extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 
-    protected $user, $message;
+    protected $device_token, $message;
 
     /**
      * Create a new job instance.
      *
-     * @param  User  $user
+     * @param string $device_token
      * @param string $message
      * @return void
      */
-    public function __construct(User $user, string $message)
+    public function __construct(string $device_token, string $message)
     {
-        $this->user = $user;
+        $this->device_token = $device_token;
         $this->message = $message;
     }
 
@@ -37,7 +37,7 @@ class SendPushNotification extends Job implements ShouldQueue
     public function handle()
     {
         PushNotification::app('helloIOS')
-           ->to($this->user->device_token)
+           ->to($this->device_token)
             ->send($this->message);
     }
 }
