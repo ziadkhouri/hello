@@ -4,5 +4,6 @@ namespace App\Notifications;
 
 abstract class NotificationMessage
 {
-    abstract public function toString ();    
+	
+	abstract public function toString ();    
 }

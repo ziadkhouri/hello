@@ -5,17 +5,25 @@ use App\Notifications\NotificationMessage;
 
 class PersonalisedNotification extends NotificationMessage
 {
-	private string $message;
+	private $message = '';
 
-	private function __construct() {};
-
+	/**
+	* An example of a personalised message
+	*
+	* @param string $user_name
+	*/
 	function __construct (string $user_name)
 	{
 		$this->message = "Hello " . $user_name;
 	}
-	
+
+	/**
+	* A message personalised with the given $user_name
+	*
+	* @return string
+	*/
 	public function toString ()
 	{
-		return $message;
+		return $this->message;
 	}
 }
