@@ -7,7 +7,9 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
-use App\Jobs\SendCreateUserNotification;
+//use App\Jobs\SendCreateUserNotification;
+use App\Notifications\Notification;
+use App\Notifications\Messages\CreateUserNotification;
 
 class AuthController extends Controller
 {
@@ -69,14 +71,13 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'device_token' => preg_replace(
-                                '/\s+/', 
-                                '', 
+                                '/\s+/', '', 
                                 $data['device_token']
                                 ),
             'password' => bcrypt($data['password']),
         ]);
 
-        $this->dispatch(new SendCreateUserNotification($user->id));
+        Notification::send($user, new CreateUserNotification());
 
         return $user;
     }

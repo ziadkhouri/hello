@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Notifications;
 use App\Jobs\SendPushNotification;
 
 use Illuminate\Database\Eloquent\Model;
@@ -19,9 +19,13 @@ class Notification extends Model
         'user_id', 'message'
     ];
 
-	public function send()
+	public static function send(User $user, NotificationMessage $message)
 	{
-		$user = User::find($this->user_id);
-		$this->dispatch(new SendPushNotification($user->device_token, $this->message));
+        Notification::create([
+            'user_id' => $user->id,
+            'message' => $message->toString(),
+        ]);
+
+		dispatch(new SendPushNotification($user->device_token, $message->toString()));
 	}
 }
